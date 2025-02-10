@@ -30,22 +30,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        run: |
-          # Add Node.js repository and install
-          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - 
-          sudo apt-get install -y nodejs
-        shell: bash
-
-      - name: Verify Node.js and pnpm versions
-        run: |
-          node -v
-          pnpm -v
-
-      - name: Use Node.js 20
-        uses: actions/setup-node@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: 20
+          version: 10
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
 
       # If you use other package managers like yarn or pnpm,
       # you will need to install them first
