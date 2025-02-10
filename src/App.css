@@ -57,6 +57,10 @@ body {
     margin: 5px;
 }
 
+.liElementTodo {
+    display: flex;
+}
+
 .liElementDateChekDelet {
     display: flex;
     align-items: center;

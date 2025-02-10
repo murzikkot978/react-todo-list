@@ -11,4 +11,3 @@ if (rootEl) {
     </React.StrictMode>,
   );
 }
-
