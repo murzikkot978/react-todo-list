@@ -1,13 +1,34 @@
-.square {
-    width: 33px;
-    height: 33px;
-    border-radius: 50%;
-    background-color: #00fff0;
+.allElements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.board-row {
+.inputPart {
     display: flex;
-    flex-direction: row;
-    padding: 0;
-    margin: 0;
+    flex-direction: column;
+    align-items: center;
+}
+
+.todoPart {
+    display: flex;
+    width: 700px;
+}
+
+.ulTodoPartie {
+    display: flex;
+    width: 100%;
+    height: auto;
+    justify-content: space-between;
+}
+
+.liElementDateChekDelet {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.buttonDelete {
+    width: 70px;
+    height: 22px;
 }
