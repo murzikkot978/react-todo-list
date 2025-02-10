@@ -1,7 +1,32 @@
+body {
+    background: linear-gradient(to bottom right, lightblue, pink);
+    background-attachment: fixed;
+}
+
 .allElements {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.input {
+    border: solid 1px;
+    border-radius: 5px;
+}
+
+.dateInput {
+    border: solid 1px;
+    border-radius: 5px;
+}
+
+.addTodo {
+    border: solid 1px;
+    border-radius: 5px;
+}
+
+.deleteAll {
+    border: solid 1px;
+    border-radius: 5px;
 }
 
 .inputPart {
@@ -13,6 +38,13 @@
 .todoPart {
     display: flex;
     width: 700px;
+    flex-direction: column;
+}
+
+.divUlTodoPart {
+    display: flex;
+    width: 700px;
+    flex-direction: column;
 }
 
 .ulTodoPartie {
@@ -20,6 +52,9 @@
     width: 100%;
     height: auto;
     justify-content: space-between;
+    border: solid;
+    border-radius: 50px;
+    margin: 5px;
 }
 
 .liElementDateChekDelet {
@@ -29,6 +64,9 @@
 }
 
 .buttonDelete {
+    display: flex;
     width: 70px;
     height: 22px;
+    border: solid 1px;
+    border-radius: 10px;
 }
