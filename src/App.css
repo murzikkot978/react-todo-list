@@ -1,13 +1,76 @@
-.square {
-    width: 33px;
-    height: 33px;
-    border-radius: 50%;
-    background-color: #00fff0;
+body {
+    background: linear-gradient(to bottom right, lightblue, pink);
+    background-attachment: fixed;
 }
 
-.board-row {
+.allElements {
     display: flex;
-    flex-direction: row;
-    padding: 0;
-    margin: 0;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input {
+    border: solid 1px;
+    border-radius: 5px;
+}
+
+.dateInput {
+    border: solid 1px;
+    border-radius: 5px;
+}
+
+.addTodo {
+    border: solid 1px;
+    border-radius: 5px;
+}
+
+.deleteAll {
+    border: solid 1px;
+    border-radius: 5px;
+}
+
+.inputPart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.todoPart {
+    display: flex;
+    width: 700px;
+    flex-direction: column;
+}
+
+.divUlTodoPart {
+    display: flex;
+    width: 700px;
+    flex-direction: column;
+}
+
+.ulTodoPartie {
+    display: flex;
+    width: 100%;
+    height: auto;
+    justify-content: space-between;
+    border: solid;
+    border-radius: 50px;
+    margin: 5px;
+}
+
+.liElementTodo {
+    display: flex;
+}
+
+.liElementDateChekDelet {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.buttonDelete {
+    display: flex;
+    width: 70px;
+    height: 22px;
+    border: solid 1px;
+    border-radius: 10px;
 }
