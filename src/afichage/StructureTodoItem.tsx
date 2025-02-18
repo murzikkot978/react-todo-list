@@ -9,6 +9,7 @@ export interface TodoPartieProps {
   deleteTodo: (todo: Todo) => void;
   changeTitle: (todo: Todo, newTotle: string) => void;
   changeDate: (todo: Todo, newDate: string) => void;
+  changeStatus: (todo: Todo, newStatus: boolean) => void;
 }
 
 function StructureTodoItem({
@@ -16,6 +17,7 @@ function StructureTodoItem({
   deleteTodo,
   changeTitle,
   changeDate,
+  changeStatus,
 }: TodoPartieProps) {
   const todoDate = new Date(todo.due_date);
   const handleDelete = async () => {
@@ -27,10 +29,14 @@ function StructureTodoItem({
     }
   };
   const handleCangeStatus = async () => {
-    try {
-      await apiFetchPatchStatusTodo(todo);
-    } catch (error) {
-      console.error('Cannot change status of todo', error);
+    const newStatus: boolean = !todo.done;
+    if (newStatus) {
+      try {
+        await apiFetchPatchStatusTodo(todo, newStatus);
+        changeStatus(todo, newStatus);
+      } catch (error) {
+        console.error('Cannot change status of todo', error);
+      }
     }
   };
   const handleChangeTitle = async () => {
@@ -65,7 +71,7 @@ function StructureTodoItem({
         <input
           onClick={handleCangeStatus}
           type="checkbox"
-          defaultChecked={todo.done}
+          checked={todo.done}
         />
         <p onClick={handleChangeDate}>{todoDate.toISOString().slice(0, 10)}</p>
         <button onClick={handleDelete} className="buttonDelete">

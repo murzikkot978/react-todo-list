@@ -1,7 +1,6 @@
 import { Todo } from '../models/Todo.ts';
 
-async function apiFetchPatchStatusTodo(todo: Todo) {
-  const newStatus: boolean = !todo.done;
+async function apiFetchPatchStatusTodo(todo: Todo, newStatus: boolean) {
   const response = await fetch(
     `https://api.todos.in.jt-lab.ch/todos?id=eq.${todo.id}`,
     {

@@ -13,6 +13,7 @@ function App() {
   };
 
   const changeTitle = (todo: Todo, newTitle: string) => {
+    console.log(todo);
     setTodos(
       todos.map((t) => (todo.id === t.id ? { ...t, title: newTitle } : t)),
     );
@@ -23,6 +24,12 @@ function App() {
       todos.map((t) =>
         todo.id === t.id ? { ...t, due_date: new Date(newDate) } : t,
       ),
+    );
+  };
+
+  const changeStatus = (todo: Todo, newStatus: boolean) => {
+    setTodos(
+      todos.map((t) => (todo.id === t.id ? { ...t, done: newStatus } : t)),
     );
   };
 
@@ -50,6 +57,7 @@ function App() {
           deleteTodo={deleteTodo}
           changeTitle={changeTitle}
           changeDate={changeDate}
+          changeStatus={changeStatus}
         />
       </div>
     </div>

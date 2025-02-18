@@ -6,9 +6,16 @@ interface Props {
   deleteTodo: (todo: Todo) => void;
   changeTitle: (todo: Todo, newTitle: string) => void;
   changeDate: (todo: Todo, newDate: string) => void;
+  changeStatus: (todo: Todo, newStatus: boolean) => void;
 }
 
-function TodoPartie({ todos, deleteTodo, changeTitle, changeDate }: Props) {
+function TodoPartie({
+  todos,
+  deleteTodo,
+  changeTitle,
+  changeDate,
+  changeStatus,
+}: Props) {
   return (
     <div className="divUlTodoPart">
       {todos.map((t: Todo) => (
@@ -18,6 +25,7 @@ function TodoPartie({ todos, deleteTodo, changeTitle, changeDate }: Props) {
           deleteTodo={deleteTodo}
           changeTitle={changeTitle}
           changeDate={changeDate}
+          changeStatus={changeStatus}
         />
       ))}
     </div>
