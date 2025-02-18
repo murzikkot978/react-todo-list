@@ -9,12 +9,16 @@ body {
     align-items: center;
 }
 
+.error {
+    color: red;
+}
+
 .input {
     border: solid 1px;
     border-radius: 5px;
 }
 
-.dateInput {
+.inputDate {
     border: solid 1px;
     border-radius: 5px;
 }
@@ -29,13 +33,13 @@ body {
     border-radius: 5px;
 }
 
-.inputPart {
+.inputPartie {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.todoPart {
+.todoPartie {
     display: flex;
     width: 700px;
     flex-direction: column;
