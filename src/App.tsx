@@ -41,7 +41,7 @@ function App() {
     setTodos([]);
   };
 
-  const sortingByDate = (todo: Todo[]) => {
+  const sorting = (todo: Todo[]) => {
     console.log(todo);
     setTodos(todo);
   };
@@ -58,7 +58,7 @@ function App() {
           addTodo={addTodo}
           deleteAllTodo={deleteAllTodo}
           todos={todos}
-          sortingByDate={sortingByDate}
+          sorting={sorting}
         />
       </div>
       <div className="todoPartie">
