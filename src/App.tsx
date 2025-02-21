@@ -7,6 +7,7 @@ import apiFetchGet from './api-fetch/apiFetchGet.ts';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [doneUdone, setDoneUdone] = useState('');
 
   const addTodo = (todo: Todo) => {
     setTodos([...todos, todo]);
@@ -41,19 +42,45 @@ function App() {
     setTodos([]);
   };
 
+  const sorting = (todo: Todo[]) => {
+    setTodos(todo);
+  };
+
+  const statusDoneUndone = (statusDoneUndone: string) => {
+    setDoneUdone(statusDoneUndone);
+  };
+
   useEffect(() => {
     apiFetchGet().then((todos) => setTodos(todos));
   }, []);
+
+  function sortDoneUndone(todos: Todo[]) {
+    if (doneUdone === 'done') {
+      return todos.filter((t) => t.done);
+    } else if (doneUdone === 'undone') {
+      return todos.filter((t) => !t.done);
+    } else {
+      return todos;
+    }
+  }
+
+  const todosTemporer = sortDoneUndone(todos);
 
   return (
     <div className="allElements">
       <div className="inputPartie">
         <h1>Todos</h1>
-        <InputPartie addTodo={addTodo} deleteAllTodo={deleteAllTodo} />
+        <InputPartie
+          addTodo={addTodo}
+          deleteAllTodo={deleteAllTodo}
+          todos={todos}
+          sorting={sorting}
+          statusDoneUndone={statusDoneUndone}
+        />
       </div>
       <div className="todoPartie">
         <TodoPartie
-          todos={todos}
+          todosTemporer={todosTemporer}
           deleteTodo={deleteTodo}
           changeTitle={changeTitle}
           changeDate={changeDate}

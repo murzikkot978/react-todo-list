@@ -30,13 +30,11 @@ function StructureTodoItem({
   };
   const handleCangeStatus = async () => {
     const newStatus: boolean = !todo.done;
-    if (newStatus) {
-      try {
-        await apiFetchPatchStatusTodo(todo, newStatus);
-        changeStatus(todo, newStatus);
-      } catch (error) {
-        console.error('Cannot change status of todo', error);
-      }
+    try {
+      await apiFetchPatchStatusTodo(todo, newStatus);
+      changeStatus(todo, newStatus);
+    } catch (error) {
+      console.error('Cannot change status of todo', error);
     }
   };
   const handleChangeTitle = async () => {
@@ -69,7 +67,7 @@ function StructureTodoItem({
       </li>
       <li className="liElementDateChekDelet">
         <input
-          onClick={handleCangeStatus}
+          onChange={handleCangeStatus}
           type="checkbox"
           checked={todo.done}
         />

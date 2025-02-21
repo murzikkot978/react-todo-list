@@ -2,7 +2,7 @@ import StructureTodoItem from './StructureTodoItem.tsx';
 import { Todo } from '../models/Todo.ts';
 
 interface Props {
-  todos: Todo[];
+  todosTemporer: Todo[];
   deleteTodo: (todo: Todo) => void;
   changeTitle: (todo: Todo, newTitle: string) => void;
   changeDate: (todo: Todo, newDate: string) => void;
@@ -10,7 +10,7 @@ interface Props {
 }
 
 function TodoPartie({
-  todos,
+  todosTemporer,
   deleteTodo,
   changeTitle,
   changeDate,
@@ -18,7 +18,7 @@ function TodoPartie({
 }: Props) {
   return (
     <div className="divUlTodoPart">
-      {todos.map((t: Todo) => (
+      {todosTemporer.map((t: Todo) => (
         <StructureTodoItem
           key={t.id}
           todo={t}

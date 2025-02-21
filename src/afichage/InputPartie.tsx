@@ -2,13 +2,25 @@ import React, { useState } from 'react';
 import apiFetchPost from '../api-fetch/apiFetchPost.ts';
 import apiFetchDeleteAllTodo from '../api-fetch/apiFetchDeleteAllTodo.ts';
 import { Todo } from '../models/Todo.ts';
+import sortMinToMaxDate from '../sorting/sortMinToMaxDate.ts';
+import sortMaxToMinDate from '../sorting/sortMaxToMinDate.ts';
+import sortByName from '../sorting/sortByName.ts';
 
 interface InputPartieProps {
   addTodo: (todo: Todo) => void;
   deleteAllTodo: () => void;
+  todos: Todo[];
+  sorting: (todo: Todo[]) => void;
+  statusDoneUndone: (statusDoneUndone: string) => void;
 }
 
-function InputPartie({ addTodo, deleteAllTodo }: InputPartieProps) {
+function InputPartie({
+  addTodo,
+  deleteAllTodo,
+  todos,
+  sorting,
+  statusDoneUndone,
+}: InputPartieProps) {
   const [status, setStatus] = useState('typing');
   const [todoInput, setTodoInput] = useState('');
   const [todoDate, setTodoDate] = useState('');
@@ -48,8 +60,44 @@ function InputPartie({ addTodo, deleteAllTodo }: InputPartieProps) {
     }
   };
 
+  const sortingByDateMinToMax = () => {
+    try {
+      const nextList = [...todos];
+      sortMinToMaxDate(nextList);
+      sorting(nextList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const sortingByDateMaxToMin = () => {
+    try {
+      const nextList = [...todos];
+      sortMaxToMinDate(nextList);
+      sorting(nextList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const sortingByName = async () => {
+    try {
+      const nextList = [...todos];
+      sortByName(nextList);
+      sorting(nextList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
+      <button onClick={sortingByDateMinToMax}>Sort min to max</button>
+      <button onClick={sortingByDateMaxToMin}>Sort max to min</button>
+      <button onClick={sortingByName}>Sort by name</button>
+      <button onClick={() => statusDoneUndone('done')}>Done</button>
+      <button onClick={() => statusDoneUndone('undone')}>Undone</button>
+      <button onClick={() => statusDoneUndone('')}>All</button>
       <form className="divInputPartie">
         <input
           value={todoInput}
