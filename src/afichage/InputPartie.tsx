@@ -90,38 +90,14 @@ function InputPartie({
     }
   };
 
-  const doneTodo = async () => {
-    try {
-      statusDoneUndone('done');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const undoneTodo = async () => {
-    try {
-      statusDoneUndone('undone');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const allTodo = async () => {
-    try {
-      statusDoneUndone('');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <>
       <button onClick={sortingByDateMinToMax}>Sort min to max</button>
       <button onClick={sortingByDateMaxToMin}>Sort max to min</button>
       <button onClick={sortingByName}>Sort by name</button>
-      <button onClick={doneTodo}>Done</button>
-      <button onClick={undoneTodo}>Undone</button>
-      <button onClick={allTodo}>All</button>
+      <button onClick={() => statusDoneUndone('done')}>Done</button>
+      <button onClick={() => statusDoneUndone('undone')}>Undone</button>
+      <button onClick={() => statusDoneUndone('')}>All</button>
       <form className="divInputPartie">
         <input
           value={todoInput}
