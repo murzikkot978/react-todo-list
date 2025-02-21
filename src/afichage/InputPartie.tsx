@@ -60,7 +60,7 @@ function InputPartie({
     }
   };
 
-  const sortingByDateMinToMax = async () => {
+  const sortingByDateMinToMax = () => {
     try {
       const nextList = [...todos];
       sortMinToMaxDate(nextList);
@@ -70,7 +70,7 @@ function InputPartie({
     }
   };
 
-  const sortingByDateMaxToMin = async () => {
+  const sortingByDateMaxToMin = () => {
     try {
       const nextList = [...todos];
       sortMaxToMinDate(nextList);
