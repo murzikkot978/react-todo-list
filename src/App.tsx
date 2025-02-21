@@ -41,6 +41,11 @@ function App() {
     setTodos([]);
   };
 
+  const sortingByDate = (todo: Todo[]) => {
+    console.log(todo);
+    setTodos(todo);
+  };
+
   useEffect(() => {
     apiFetchGet().then((todos) => setTodos(todos));
   }, []);
@@ -49,7 +54,12 @@ function App() {
     <div className="allElements">
       <div className="inputPartie">
         <h1>Todos</h1>
-        <InputPartie addTodo={addTodo} deleteAllTodo={deleteAllTodo} />
+        <InputPartie
+          addTodo={addTodo}
+          deleteAllTodo={deleteAllTodo}
+          todos={todos}
+          sortingByDate={sortingByDate}
+        />
       </div>
       <div className="todoPartie">
         <TodoPartie

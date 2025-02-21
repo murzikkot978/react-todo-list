@@ -2,13 +2,22 @@ import React, { useState } from 'react';
 import apiFetchPost from '../api-fetch/apiFetchPost.ts';
 import apiFetchDeleteAllTodo from '../api-fetch/apiFetchDeleteAllTodo.ts';
 import { Todo } from '../models/Todo.ts';
+import sortMinToMaxDate from '../sorting/sortMinToMaxDate.ts';
+import sortMaxToMinDate from '../sorting/sortMaxToMinDate.ts';
 
 interface InputPartieProps {
   addTodo: (todo: Todo) => void;
   deleteAllTodo: () => void;
+  todos: Todo[];
+  sortingByDate: (todo: Todo[]) => void;
 }
 
-function InputPartie({ addTodo, deleteAllTodo }: InputPartieProps) {
+function InputPartie({
+  addTodo,
+  deleteAllTodo,
+  todos,
+  sortingByDate,
+}: InputPartieProps) {
   const [status, setStatus] = useState('typing');
   const [todoInput, setTodoInput] = useState('');
   const [todoDate, setTodoDate] = useState('');
@@ -48,8 +57,30 @@ function InputPartie({ addTodo, deleteAllTodo }: InputPartieProps) {
     }
   };
 
+  const sortingByDateMinToMax = async () => {
+    try {
+      const nextList = [...todos];
+      sortMinToMaxDate(nextList);
+      sortingByDate(nextList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const sortingByDateMaxToMin = async () => {
+    try {
+      const nextList = [...todos];
+      sortMaxToMinDate(nextList);
+      sortingByDate(nextList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
+      <button onClick={sortingByDateMinToMax}>Sort min to max</button>
+      <button onClick={sortingByDateMaxToMin}>Sort max to min</button>
       <form className="divInputPartie">
         <input
           value={todoInput}
