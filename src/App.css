@@ -1,80 +1,132 @@
 body {
-    background: linear-gradient(to bottom right, lightblue, pink);
-    background-attachment: fixed;
+  background: linear-gradient(to bottom right, lightblue, pink);
+  background-attachment: fixed;
 }
 
 .allElements {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.error {
-    color: red;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .input {
-    border: solid 1px;
-    border-radius: 5px;
+  border: solid 1px;
+  border-radius: 5px;
 }
 
 .inputDate {
-    border: solid 1px;
-    border-radius: 5px;
+  border: solid 1px;
+  border-radius: 5px;
 }
 
 .addTodo {
-    border: solid 1px;
-    border-radius: 5px;
+  border: solid 1px;
+  border-radius: 5px;
+}
+
+.divButtonDeleteAndSorting {
+  display: flex;
+  height: 19px;
+  align-items: center;
+  width: 370.65px;
+  justify-content: space-between;
 }
 
 .deleteAll {
-    border: solid 1px;
-    border-radius: 5px;
+  border: solid 1px;
+  border-radius: 5px;
 }
 
 .inputPartie {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .todoPartie {
-    display: flex;
-    width: 700px;
-    flex-direction: column;
+  display: flex;
+  width: 700px;
+  flex-direction: column;
 }
 
 .divUlTodoPart {
-    display: flex;
-    width: 700px;
-    flex-direction: column;
+  display: flex;
+  width: 700px;
+  flex-direction: column;
 }
 
 .ulTodoPartie {
-    display: flex;
-    width: 100%;
-    height: auto;
-    justify-content: space-between;
-    border: solid;
-    border-radius: 50px;
-    margin: 5px;
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: space-between;
+  border: solid;
+  border-radius: 50px;
+  margin: 5px;
 }
 
 .liElementTodo {
-    display: flex;
+  display: flex;
 }
 
 .liElementDateChekDelet {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .buttonDelete {
-    display: flex;
-    width: 70px;
-    height: 22px;
-    border: solid 1px;
-    border-radius: 10px;
+  display: flex;
+  width: 70px;
+  height: 22px;
+  border: solid 1px;
+  border-radius: 10px;
+}
+
+---------------------------- .toast-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  align-items: center;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  height: 19px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: solid 1px;
+  border-radius: 5px;
+}
+
+.dropdown-list {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-list button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 5px;
+  width: 100%;
+}
+
+.dropdown-list button:hover {
+  background: #f0f0f0;
 }
