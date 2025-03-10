@@ -4,6 +4,9 @@ import TodoPartie from './afichage/TodoPartie.tsx';
 import { useState, useEffect } from 'react';
 import { Todo } from './models/Todo.ts';
 import apiFetchGet from './api-fetch/apiFetchGet.ts';
+import sortByName from './sorting/sortByName.ts';
+import sortMinToMaxDate from './sorting/sortMinToMaxDate.ts';
+import sortMaxToMinDate from './sorting/sortMaxToMinDate.ts';
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -50,6 +53,24 @@ function App() {
     setDoneUdone(statusDoneUndone);
   };
 
+  const sortingByName = async () => {
+    const nextList = [...todos];
+    sortByName(nextList);
+    sorting(nextList);
+  };
+
+  const sortingByDateMinToMax = () => {
+    const nextList = [...todos];
+    sortMinToMaxDate(nextList);
+    sorting(nextList);
+  };
+
+  const sortingByDateMaxToMin = () => {
+    const nextList = [...todos];
+    sortMaxToMinDate(nextList);
+    sorting(nextList);
+  };
+
   useEffect(() => {
     apiFetchGet().then((todos) => setTodos(todos));
   }, []);
@@ -73,9 +94,10 @@ function App() {
         <InputPartie
           addTodo={addTodo}
           deleteAllTodo={deleteAllTodo}
-          todos={todos}
-          sorting={sorting}
           statusDoneUndone={statusDoneUndone}
+          sortingByName={sortingByName}
+          sortingByDateMinToMax={sortingByDateMinToMax}
+          sortingByDateMaxToMin={sortingByDateMaxToMin}
         />
       </div>
       <div className="todoPartie">

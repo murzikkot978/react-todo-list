@@ -2,25 +2,24 @@ import React, { useState } from 'react';
 import apiFetchPost from '../api-fetch/apiFetchPost.ts';
 import apiFetchDeleteAllTodo from '../api-fetch/apiFetchDeleteAllTodo.ts';
 import { Todo } from '../models/Todo.ts';
-import sortMinToMaxDate from '../sorting/sortMinToMaxDate.ts';
-import sortMaxToMinDate from '../sorting/sortMaxToMinDate.ts';
-import sortByName from '../sorting/sortByName.ts';
 import { useToasts } from '../test/ErrorContext.tsx';
 
 interface InputPartieProps {
   addTodo: (todo: Todo) => void;
   deleteAllTodo: () => void;
-  todos: Todo[];
-  sorting: (todo: Todo[]) => void;
   statusDoneUndone: (statusDoneUndone: string) => void;
+  sortingByName: () => void;
+  sortingByDateMinToMax: () => void;
+  sortingByDateMaxToMin: () => void;
 }
 
 function InputPartie({
   addTodo,
   deleteAllTodo,
-  todos,
-  sorting,
   statusDoneUndone,
+  sortingByName,
+  sortingByDateMinToMax,
+  sortingByDateMaxToMin,
 }: InputPartieProps) {
   const [status, setStatus] = useState('typing');
   const [todoInput, setTodoInput] = useState('');
@@ -60,24 +59,6 @@ function InputPartie({
       console.error(err);
       context.pushToast('Can not delete todos');
     }
-  };
-
-  const sortingByDateMinToMax = () => {
-    const nextList = [...todos];
-    sortMinToMaxDate(nextList);
-    sorting(nextList);
-  };
-
-  const sortingByDateMaxToMin = () => {
-    const nextList = [...todos];
-    sortMaxToMinDate(nextList);
-    sorting(nextList);
-  };
-
-  const sortingByName = async () => {
-    const nextList = [...todos];
-    sortByName(nextList);
-    sorting(nextList);
   };
 
   const [isOpen, setIsOpen] = useState(false);

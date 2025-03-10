@@ -4,7 +4,7 @@ import apiFetchPatchStatusTodo from '../api-fetch/apiFetchPatchStatusTodo.ts';
 import apiFetchPatchChangeTitle from '../api-fetch/apiFetchPatchChangeTitle.ts';
 import apiFetchPatchChangeDate from '../api-fetch/apiFetchPatchChangeDate.ts';
 import { useToasts } from '../test/ErrorContext.tsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface TodoPartieProps {
   todo: Todo;
@@ -45,9 +45,17 @@ function StructureTodoItem({
 
   const [newTitle, setNewTitle] = useState(todo.title);
   const [editingTitle, setEditingTitle] = useState(false);
-
+  useEffect(() => {
+    if (!editingTitle) {
+      setNewTitle(todo.title);
+    }
+  }, [todo.title, editingTitle]);
   const handleChangeTitle = async () => {
-    if (!newTitle.trim()) return;
+    if (!newTitle.trim()) {
+      setEditingTitle(false);
+      return;
+    }
+
     try {
       await apiFetchPatchChangeTitle(todo.id, newTitle);
       changeTitle(todo, newTitle);
@@ -63,7 +71,11 @@ function StructureTodoItem({
   const [editingDate, setEditingDate] = useState(false);
 
   const handleChangeDate = async () => {
-    if (!newDate) return;
+    if (!newDate) {
+      setEditingDate(false);
+      return;
+    }
+
     try {
       await apiFetchPatchChangeDate(todo.id, newDate);
       changeDate(todo, newDate);
