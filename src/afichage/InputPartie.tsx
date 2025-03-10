@@ -2,29 +2,29 @@ import React, { useState } from 'react';
 import apiFetchPost from '../api-fetch/apiFetchPost.ts';
 import apiFetchDeleteAllTodo from '../api-fetch/apiFetchDeleteAllTodo.ts';
 import { Todo } from '../models/Todo.ts';
-import sortMinToMaxDate from '../sorting/sortMinToMaxDate.ts';
-import sortMaxToMinDate from '../sorting/sortMaxToMinDate.ts';
-import sortByName from '../sorting/sortByName.ts';
+import { useToasts } from '../test/ErrorContext.tsx';
 
 interface InputPartieProps {
   addTodo: (todo: Todo) => void;
   deleteAllTodo: () => void;
-  todos: Todo[];
-  sorting: (todo: Todo[]) => void;
   statusDoneUndone: (statusDoneUndone: string) => void;
+  sortingByName: () => void;
+  sortingByDateMinToMax: () => void;
+  sortingByDateMaxToMin: () => void;
 }
 
 function InputPartie({
   addTodo,
   deleteAllTodo,
-  todos,
-  sorting,
   statusDoneUndone,
+  sortingByName,
+  sortingByDateMinToMax,
+  sortingByDateMaxToMin,
 }: InputPartieProps) {
   const [status, setStatus] = useState('typing');
   const [todoInput, setTodoInput] = useState('');
   const [todoDate, setTodoDate] = useState('');
-  const [error, setError] = useState('');
+  const context = useToasts();
 
   async function handleSubmit() {
     setStatus('submitting');
@@ -33,11 +33,13 @@ function InputPartie({
       console.log(newTodo);
       addTodo(newTodo);
       setStatus('success');
-      setError('');
+      setTodoInput('');
+      setTodoDate('');
     } catch (err: unknown) {
       console.log(err);
       setStatus('typing');
-      setError('Cannot add todo');
+      context.pushToast('Can not add todo');
+      context.pushToast('Write date');
     }
   }
 
@@ -53,51 +55,16 @@ function InputPartie({
     try {
       await apiFetchDeleteAllTodo();
       deleteAllTodo();
-      setError('');
     } catch (err) {
       console.error(err);
-      setError('Failed to delete all todos');
+      context.pushToast('Can not delete todos');
     }
   };
 
-  const sortingByDateMinToMax = () => {
-    try {
-      const nextList = [...todos];
-      sortMinToMaxDate(nextList);
-      sorting(nextList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const sortingByDateMaxToMin = () => {
-    try {
-      const nextList = [...todos];
-      sortMaxToMinDate(nextList);
-      sorting(nextList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const sortingByName = async () => {
-    try {
-      const nextList = [...todos];
-      sortByName(nextList);
-      sorting(nextList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <button onClick={sortingByDateMinToMax}>Sort min to max</button>
-      <button onClick={sortingByDateMaxToMin}>Sort max to min</button>
-      <button onClick={sortingByName}>Sort by name</button>
-      <button onClick={() => statusDoneUndone('done')}>Done</button>
-      <button onClick={() => statusDoneUndone('undone')}>Undone</button>
-      <button onClick={() => statusDoneUndone('')}>All</button>
       <form className="divInputPartie">
         <input
           value={todoInput}
@@ -120,10 +87,30 @@ function InputPartie({
           addTodo
         </button>
       </form>
-      <button onClick={handleDeleteAllTodo} className="deleteAll">
-        Delete all
-      </button>
-      {error.length > 0 && <p className="error">{error}</p>}
+      <div className="divButtonDeleteAndSorting">
+        <button onClick={handleDeleteAllTodo} className="deleteAll">
+          Delete all
+        </button>
+        <div>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="dropdown-toggle"
+          >
+            Sorting Options ▼
+          </button>
+
+          {isOpen && (
+            <div className="dropdown-list">
+              <button onClick={sortingByDateMinToMax}>Sort min to max</button>
+              <button onClick={sortingByDateMaxToMin}>Sort max to min</button>
+              <button onClick={sortingByName}>Sort by name</button>
+              <button onClick={() => statusDoneUndone('done')}>Done</button>
+              <button onClick={() => statusDoneUndone('undone')}>Undone</button>
+              <button onClick={() => statusDoneUndone('')}>All</button>
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 }
