@@ -1,32 +1,42 @@
 import StructureTodoItem from './StructureTodoItem.tsx';
 import { Todo } from '../models/Todo.ts';
+import { useTodoStorage } from '../zustand.ts';
+import sortByName from '../sorting/sortByName.ts';
+import sortMinToMaxDate from '../sorting/sortMinToMaxDate.ts';
+import sortMaxToMinDate from '../sorting/sortMaxToMinDate.ts';
 
-interface Props {
-  todosTemporer: Todo[];
-  deleteTodo: (todo: Todo) => void;
-  changeTitle: (todo: Todo, newTitle: string) => void;
-  changeDate: (todo: Todo, newDate: string) => void;
-  changeStatus: (todo: Todo, newStatus: boolean) => void;
-}
+function TodoPartie() {
+  const todos = useTodoStorage((state) => state.todos);
+  const sortingMethod = useTodoStorage((state) => state.sortingMethod);
 
-function TodoPartie({
-  todosTemporer,
-  deleteTodo,
-  changeTitle,
-  changeDate,
-  changeStatus,
-}: Props) {
+  console.log(todos);
+
+  const sorting = (todos: Todo[]): Todo[] => {
+    if (sortingMethod === 'minToMax') {
+      return sortMinToMaxDate([...todos]);
+    } else if (sortingMethod === 'maxToMin') {
+      const nextList = [...todos];
+      return sortMaxToMinDate(nextList);
+    } else if (sortingMethod === 'name') {
+      const nextList = [...todos];
+      return sortByName(nextList);
+    } else if (sortingMethod === 'done') {
+      const nextList = todos.filter((t) => t.done);
+      return nextList;
+    } else if (sortingMethod === 'undone') {
+      const nextList = todos.filter((t) => !t.done);
+      return nextList;
+    } else {
+      const nextList = todos;
+      return nextList;
+    }
+  };
+
+  console.log(todos);
   return (
     <div className="divUlTodoPart">
-      {todosTemporer.map((t: Todo) => (
-        <StructureTodoItem
-          key={t.id}
-          todo={t}
-          deleteTodo={deleteTodo}
-          changeTitle={changeTitle}
-          changeDate={changeDate}
-          changeStatus={changeStatus}
-        />
+      {sorting(todos).map((t: Todo) => (
+        <StructureTodoItem key={t.id} todo={t} />
       ))}
     </div>
   );
