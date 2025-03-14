@@ -1,6 +1,6 @@
 import { Todo } from '../models/Todo.ts';
 
-async function apiFetchGet() {
+async function apiFetchGetTodo() {
   const response = await fetch('https://api.todos.in.jt-lab.ch/todos');
   const todos = (await response.json()) as Todo[];
   if (!response.ok) {
@@ -9,4 +9,4 @@ async function apiFetchGet() {
   return todos;
 }
 
-export default apiFetchGet;
+export default apiFetchGetTodo;

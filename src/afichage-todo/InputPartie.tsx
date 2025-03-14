@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import apiFetchPost from '../api-fetch/apiFetchPost.ts';
-import apiFetchDeleteAllTodo from '../api-fetch/apiFetchDeleteAllTodo.ts';
+import apiFetchPost from '../api-fetch-todo/apiFetchPost.ts';
+import apiFetchDeleteAllTodo from '../api-fetch-todo/apiFetchDeleteAllTodo.ts';
 import { useToasts } from '../test/ErrorContext.tsx';
 import { useTodoStorage } from '../zustand.ts';
 
@@ -51,8 +51,6 @@ function InputPartie() {
     }
   };
 
-  /* const [isOpen, setIsOpen] = useState(false);
-   */
   return (
     <>
       <form className="divInputPartie">

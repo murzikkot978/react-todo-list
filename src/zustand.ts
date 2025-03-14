@@ -1,10 +1,9 @@
 import { create } from 'zustand';
 import { Todo } from './models/Todo.ts';
+import { Categories } from './models/Categories.ts';
 
 interface State {
   todos: Todo[];
-  loading: boolean;
-  error: boolean;
   sortingMethod: string;
 }
 
@@ -25,8 +24,6 @@ interface Deleting {
 export const useTodoStorage = create<State & Actions & Deleting>((set) => ({
   todos: [],
   todosTemporer: [],
-  loading: false,
-  error: false,
   setTodos: (newTodos) => {
     set(() => ({ todos: [...newTodos] }));
   },
@@ -65,5 +62,37 @@ export const useTodoStorage = create<State & Actions & Deleting>((set) => ({
   sortingMethod: '',
   updateSortingMethod: (newSortingMethod: string) => {
     set(() => ({ sortingMethod: newSortingMethod }));
+  },
+}));
+
+interface StateCategories {
+  categories: Categories[];
+}
+interface ActionCategories {
+  addCategories: (newCategories: Categories[]) => void;
+  setCategories: (newCategories: Categories[]) => void;
+}
+interface DeletingCategories {
+  deleteCategories: (categorie: Categories) => void;
+  deleteAllCategories: () => void;
+}
+
+export const useCategoriesStorage = create<
+  StateCategories & DeletingCategories & ActionCategories
+>((set) => ({
+  categories: [],
+  setCategories: (newCategories) => {
+    set(() => ({ categories: [...newCategories] }));
+  },
+  addCategories: (newCategories) => {
+    set((state) => ({ categories: [...state.categories, ...newCategories] }));
+  },
+  deleteAllCategories: () => {
+    set(() => ({ categories: [] }));
+  },
+  deleteCategories: (categorie: Categories) => {
+    set((state) => ({
+      categories: state.categories.filter((t) => t.id !== categorie.id),
+    }));
   },
 }));

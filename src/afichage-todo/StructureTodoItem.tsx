@@ -1,13 +1,13 @@
-import apiFetchDeleteTodo from '../api-fetch/apiFetchDeleteTodo.ts';
+import apiFetchDeleteTodo from '../api-fetch-todo/apiFetchDeleteTodo.ts';
 import { Todo } from '../models/Todo.ts';
-import apiFetchPatchStatusTodo from '../api-fetch/apiFetchPatchStatusTodo.ts';
-import apiFetchPatchChangeTitle from '../api-fetch/apiFetchPatchChangeTitle.ts';
-import apiFetchPatchChangeDate from '../api-fetch/apiFetchPatchChangeDate.ts';
+import apiFetchPatchStatusTodo from '../api-fetch-todo/apiFetchPatchStatusTodo.ts';
+import apiFetchPatchChangeTitle from '../api-fetch-todo/apiFetchPatchChangeTitle.ts';
+import apiFetchPatchChangeDate from '../api-fetch-todo/apiFetchPatchChangeDate.ts';
 import { useToasts } from '../test/ErrorContext.tsx';
 import { useEffect, useState } from 'react';
 import { useTodoStorage } from '../zustand.ts';
 
-export interface TodoPartieProps {
+interface TodoPartieProps {
   todo: Todo;
 }
 
@@ -19,6 +19,24 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
 
   const todoDate = new Date(todo.due_date);
   const context = useToasts();
+
+  const today = new Date();
+  const afterfordays = new Date();
+  afterfordays.setDate(afterfordays.getDate() + 4);
+
+  let colorTodo = '';
+  if (todoDate.toISOString().slice(0, 10) < today.toISOString().slice(0, 10)) {
+    colorTodo = 'red';
+  } else if (
+    todoDate.toISOString().slice(0, 10) === today.toISOString().slice(0, 10)
+  ) {
+    colorTodo = 'orange';
+  } else if (todoDate > today && todoDate < afterfordays) {
+    colorTodo = 'yellow';
+  } else {
+    colorTodo = 'green';
+  }
+
   const handleDelete = async () => {
     try {
       await apiFetchDeleteTodo(todo.id);
@@ -82,6 +100,7 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
       setEditingDate(false);
     }
   };
+
   return (
     <ul className="ulTodoPartie">
       <li className="liElementTodo">
@@ -116,7 +135,7 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
             onKeyDown={(e) => e.key === 'Enter' && handleChangeDate()}
           />
         ) : (
-          <p onClick={() => setEditingDate(true)}>
+          <p style={{ color: colorTodo }} onClick={() => setEditingDate(true)}>
             {todoDate.toISOString().slice(0, 10)}
           </p>
         )}
