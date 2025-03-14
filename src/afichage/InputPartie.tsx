@@ -1,26 +1,16 @@
 import React, { useState } from 'react';
 import apiFetchPost from '../api-fetch/apiFetchPost.ts';
 import apiFetchDeleteAllTodo from '../api-fetch/apiFetchDeleteAllTodo.ts';
-import { Todo } from '../models/Todo.ts';
 import { useToasts } from '../test/ErrorContext.tsx';
+import { useTodoStorage } from '../zustand.ts';
 
-interface InputPartieProps {
-  addTodo: (todo: Todo) => void;
-  deleteAllTodo: () => void;
-  statusDoneUndone: (statusDoneUndone: string) => void;
-  sortingByName: () => void;
-  sortingByDateMinToMax: () => void;
-  sortingByDateMaxToMin: () => void;
-}
+function InputPartie() {
+  const addTodos = useTodoStorage((state) => state.addTodos);
+  const deleteAllTodo = useTodoStorage((state) => state.deleteAllTodo);
+  const updateSortingMethod = useTodoStorage(
+    (state) => state.updateSortingMethod,
+  );
 
-function InputPartie({
-  addTodo,
-  deleteAllTodo,
-  statusDoneUndone,
-  sortingByName,
-  sortingByDateMinToMax,
-  sortingByDateMaxToMin,
-}: InputPartieProps) {
   const [status, setStatus] = useState('typing');
   const [todoInput, setTodoInput] = useState('');
   const [todoDate, setTodoDate] = useState('');
@@ -31,7 +21,7 @@ function InputPartie({
     try {
       const newTodo = await apiFetchPost(todoInput, todoDate);
       console.log(newTodo);
-      addTodo(newTodo);
+      addTodos([newTodo]);
       setStatus('success');
       setTodoInput('');
       setTodoDate('');
@@ -61,8 +51,8 @@ function InputPartie({
     }
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-
+  /* const [isOpen, setIsOpen] = useState(false);
+   */
   return (
     <>
       <form className="divInputPartie">
@@ -91,25 +81,21 @@ function InputPartie({
         <button onClick={handleDeleteAllTodo} className="deleteAll">
           Delete all
         </button>
-        <div>
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="dropdown-toggle"
-          >
-            Sorting Options ▼
-          </button>
 
-          {isOpen && (
-            <div className="dropdown-list">
-              <button onClick={sortingByDateMinToMax}>Sort min to max</button>
-              <button onClick={sortingByDateMaxToMin}>Sort max to min</button>
-              <button onClick={sortingByName}>Sort by name</button>
-              <button onClick={() => statusDoneUndone('done')}>Done</button>
-              <button onClick={() => statusDoneUndone('undone')}>Undone</button>
-              <button onClick={() => statusDoneUndone('')}>All</button>
-            </div>
-          )}
-        </div>
+        <select className="dropdown-toggle">
+          <option onClick={() => updateSortingMethod('')}>All</option>
+          <option onClick={() => updateSortingMethod('done')}>Done</option>
+          <option onClick={() => updateSortingMethod('undone')}>Undone</option>
+          <option onClick={() => updateSortingMethod('minToMax')}>
+            Sort min to max
+          </option>
+          <option onClick={() => updateSortingMethod('maxToMin')}>
+            Sort max to min
+          </option>
+          <option onClick={() => updateSortingMethod('name')}>
+            Sort by name
+          </option>
+        </select>
       </div>
     </>
   );

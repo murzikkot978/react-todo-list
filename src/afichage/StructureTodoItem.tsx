@@ -5,22 +5,18 @@ import apiFetchPatchChangeTitle from '../api-fetch/apiFetchPatchChangeTitle.ts';
 import apiFetchPatchChangeDate from '../api-fetch/apiFetchPatchChangeDate.ts';
 import { useToasts } from '../test/ErrorContext.tsx';
 import { useEffect, useState } from 'react';
+import { useTodoStorage } from '../zustand.ts';
 
 export interface TodoPartieProps {
   todo: Todo;
-  deleteTodo: (todo: Todo) => void;
-  changeTitle: (todo: Todo, newTotle: string) => void;
-  changeDate: (todo: Todo, newDate: string) => void;
-  changeStatus: (todo: Todo, newStatus: boolean) => void;
 }
 
-function StructureTodoItem({
-  todo,
-  deleteTodo,
-  changeTitle,
-  changeDate,
-  changeStatus,
-}: TodoPartieProps) {
+function StructureTodoItem({ todo }: TodoPartieProps) {
+  const deleteTodo = useTodoStorage((state) => state.deleteTodo);
+  const updateTitle = useTodoStorage((state) => state.updateTitle);
+  const updateDate = useTodoStorage((state) => state.updateDate);
+  const updateStatus = useTodoStorage((state) => state.updateStatus);
+
   const todoDate = new Date(todo.due_date);
   const context = useToasts();
   const handleDelete = async () => {
@@ -36,7 +32,7 @@ function StructureTodoItem({
     const newStatus: boolean = !todo.done;
     try {
       await apiFetchPatchStatusTodo(todo, newStatus);
-      changeStatus(todo, newStatus);
+      updateStatus(todo, newStatus);
     } catch (error) {
       console.error('Cannot change status of todo', error);
       context.pushToast('Cannot change status of todo');
@@ -58,7 +54,7 @@ function StructureTodoItem({
 
     try {
       await apiFetchPatchChangeTitle(todo.id, newTitle);
-      changeTitle(todo, newTitle);
+      updateTitle(todo, newTitle);
     } catch (error) {
       console.error('Cannot change title', error);
       context.pushToast('Cannot change title');
@@ -78,7 +74,7 @@ function StructureTodoItem({
 
     try {
       await apiFetchPatchChangeDate(todo.id, newDate);
-      changeDate(todo, newDate);
+      updateDate(todo, newDate);
     } catch (error) {
       console.error('Cannot change date', error);
       context.pushToast('Cannot change date');
