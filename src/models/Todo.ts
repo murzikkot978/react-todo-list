@@ -4,4 +4,5 @@ export interface Todo {
   content: string;
   due_date: Date;
   done: boolean;
+  categories: [{ id: number }];
 }

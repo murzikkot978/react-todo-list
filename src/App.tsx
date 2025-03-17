@@ -11,7 +11,6 @@ import CategoriesPartie from './affichage-categories/CategoriesPartie.tsx';
 function App() {
   const setTodos = useTodoStorage((state) => state.setTodos);
   const setCategories = useCategoriesStorage((state) => state.setCategories);
-
   useEffect(() => {
     apiFetchGetCategories().then((categories) => {
       setCategories(categories);

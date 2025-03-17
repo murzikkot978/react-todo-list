@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Todo } from './models/Todo.ts';
 import { Categories } from './models/Categories.ts';
+import { TodosCategory } from './models/ReferenceTodosCategories.ts';
 
 interface State {
   todos: Todo[];
@@ -67,8 +68,12 @@ export const useTodoStorage = create<State & Actions & Deleting>((set) => ({
 
 interface StateCategories {
   categories: Categories[];
+  referenceBetvineCategoriesAndTodos: TodosCategory[];
 }
 interface ActionCategories {
+  setReferenceBetvineCategoriesAndTodos: (
+    newReference: TodosCategory[],
+  ) => void;
   addCategories: (newCategories: Categories[]) => void;
   setCategories: (newCategories: Categories[]) => void;
 }
@@ -81,6 +86,10 @@ export const useCategoriesStorage = create<
   StateCategories & DeletingCategories & ActionCategories
 >((set) => ({
   categories: [],
+  referenceBetvineCategoriesAndTodos: [],
+  setReferenceBetvineCategoriesAndTodos: (newReference) => {
+    set(() => ({ referenceBetvineCategoriesAndTodos: [...newReference] }));
+  },
   setCategories: (newCategories) => {
     set(() => ({ categories: [...newCategories] }));
   },

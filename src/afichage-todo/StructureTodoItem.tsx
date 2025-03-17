@@ -5,7 +5,8 @@ import apiFetchPatchChangeTitle from '../api-fetch-todo/apiFetchPatchChangeTitle
 import apiFetchPatchChangeDate from '../api-fetch-todo/apiFetchPatchChangeDate.ts';
 import { useToasts } from '../test/ErrorContext.tsx';
 import { useEffect, useState } from 'react';
-import { useTodoStorage } from '../zustand.ts';
+import { useCategoriesStorage, useTodoStorage } from '../zustand.ts';
+import { categoriesForTodo } from '../api-fetch-todo/apiCategoriesTodos.ts';
 
 interface TodoPartieProps {
   todo: Todo;
@@ -16,7 +17,8 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
   const updateTitle = useTodoStorage((state) => state.updateTitle);
   const updateDate = useTodoStorage((state) => state.updateDate);
   const updateStatus = useTodoStorage((state) => state.updateStatus);
-
+  const categories = useCategoriesStorage((state) => state.categories);
+  const todos = useTodoStorage((state) => state.todos);
   const todoDate = new Date(todo.due_date);
   const context = useToasts();
 
@@ -101,6 +103,30 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
     }
   };
 
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchTodoCategories() {
+      const todoData = todos.find((item: Todo) => item.id === todo.id);
+
+      if (todoData && todoData.categories[0]) {
+        setSelectedCategory(todoData.categories[0].id.toString());
+      } else {
+        setSelectedCategory('');
+      }
+    }
+
+    fetchTodoCategories();
+  }, [todo.id]);
+
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const categoryId = event.target.value;
+    setSelectedCategory(categoryId);
+    categoriesForTodo(categoryId, todo.id);
+  };
+
   return (
     <ul className="ulTodoPartie">
       <li className="liElementTodo">
@@ -120,6 +146,14 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
         <p>{todo.content}</p>
       </li>
       <li className="liElementDateChekDelet">
+        <select value={selectedCategory || ''} onChange={handleCategoryChange}>
+          <option value="">---chose category---</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.title}
+            </option>
+          ))}
+        </select>
         <input
           onChange={handleCangeStatus}
           type="checkbox"
