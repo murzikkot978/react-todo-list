@@ -4,7 +4,7 @@ import apiFetchPatchStatusTodo from '../api-fetch-todo/apiFetchPatchStatusTodo.t
 import apiFetchPatchChangeTitle from '../api-fetch-todo/apiFetchPatchChangeTitle.ts';
 import apiFetchPatchChangeDate from '../api-fetch-todo/apiFetchPatchChangeDate.ts';
 import { useToasts } from '../test/ErrorContext.tsx';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCategoriesStorage, useTodoStorage } from '../zustand.ts';
 import { categoriesForTodo } from '../api-fetch-todo/apiCategoriesTodos.ts';
 
@@ -26,7 +26,7 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
   const afterfordays = new Date();
   afterfordays.setDate(afterfordays.getDate() + 4);
 
-  let colorTodo = '';
+  let colorTodo: string;
   if (todoDate.toISOString().slice(0, 10) < today.toISOString().slice(0, 10)) {
     colorTodo = 'red';
   } else if (
@@ -109,7 +109,7 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
     async function fetchTodoCategories() {
       const todoData = todos.find((item: Todo) => item.id === todo.id);
 
-      if (todoData && todoData.categories[0]) {
+      if (todoData?.categories && todoData.categories[0]) {
         setSelectedCategory(todoData.categories[0].id.toString());
       } else {
         setSelectedCategory('');
@@ -117,7 +117,7 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
     }
 
     fetchTodoCategories();
-  }, [todo.id]);
+  }, [todo.id, todos]);
 
   const handleCategoryChange = (
     event: React.ChangeEvent<HTMLSelectElement>,

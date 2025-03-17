@@ -73,6 +73,10 @@ body {
   flex-direction: column;
 }
 
+.inputCategoriesColor {
+  height: 23px;
+}
+
 .divUlTodoPart {
   display: flex;
   width: 700px;

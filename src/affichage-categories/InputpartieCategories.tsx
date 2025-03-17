@@ -21,13 +21,12 @@ function InputpartieCategories() {
         categoriesInput,
         categoriesColor,
       );
-      console.log(newCategorie);
       addCategoris([newCategorie]);
       setStatus('success');
       setCategoriesInput('');
       setCategoriesColor('');
     } catch (err: unknown) {
-      console.log(err);
+      console.error(err);
       setStatus('typing');
       context.pushToast('Can not add categorie');
     }

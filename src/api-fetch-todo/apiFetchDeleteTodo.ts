@@ -3,9 +3,6 @@ async function apiFetchDeleteTodo(id: number) {
     `https://api.todos.in.jt-lab.ch/todos?id=eq.${id}`,
     {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
     },
   );
   if (!response.ok) {

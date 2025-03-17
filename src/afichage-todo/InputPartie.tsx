@@ -20,13 +20,12 @@ function InputPartie() {
     setStatus('submitting');
     try {
       const newTodo = await apiFetchPost(todoInput, todoDate);
-      console.log(newTodo);
       addTodos([newTodo]);
       setStatus('success');
       setTodoInput('');
       setTodoDate('');
     } catch (err: unknown) {
-      console.log(err);
+      console.error(err);
       setStatus('typing');
       context.pushToast('Can not add todo');
       context.pushToast('Write date');

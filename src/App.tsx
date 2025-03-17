@@ -15,13 +15,13 @@ function App() {
     apiFetchGetCategories().then((categories) => {
       setCategories(categories);
     });
-  }, []);
+  }, [setCategories]);
 
   useEffect(() => {
     apiFetchGetTodo().then((todos) => {
       setTodos(todos);
     });
-  }, []);
+  }, [setTodos]);
 
   return (
     <div className="allPage">
