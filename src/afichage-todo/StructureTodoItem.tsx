@@ -1,13 +1,14 @@
-import apiFetchDeleteTodo from '../api-fetch/apiFetchDeleteTodo.ts';
+import apiFetchDeleteTodo from '../api-fetch-todo/apiFetchDeleteTodo.ts';
 import { Todo } from '../models/Todo.ts';
-import apiFetchPatchStatusTodo from '../api-fetch/apiFetchPatchStatusTodo.ts';
-import apiFetchPatchChangeTitle from '../api-fetch/apiFetchPatchChangeTitle.ts';
-import apiFetchPatchChangeDate from '../api-fetch/apiFetchPatchChangeDate.ts';
+import apiFetchPatchStatusTodo from '../api-fetch-todo/apiFetchPatchStatusTodo.ts';
+import apiFetchPatchChangeTitle from '../api-fetch-todo/apiFetchPatchChangeTitle.ts';
+import apiFetchPatchChangeDate from '../api-fetch-todo/apiFetchPatchChangeDate.ts';
 import { useToasts } from '../test/ErrorContext.tsx';
 import { useEffect, useState } from 'react';
-import { useTodoStorage } from '../zustand.ts';
+import { useCategoriesStorage, useTodoStorage } from '../zustand.ts';
+import { categoriesForTodo } from '../api-fetch-todo/apiCategoriesTodos.ts';
 
-export interface TodoPartieProps {
+interface TodoPartieProps {
   todo: Todo;
 }
 
@@ -16,9 +17,28 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
   const updateTitle = useTodoStorage((state) => state.updateTitle);
   const updateDate = useTodoStorage((state) => state.updateDate);
   const updateStatus = useTodoStorage((state) => state.updateStatus);
-
+  const categories = useCategoriesStorage((state) => state.categories);
+  const todos = useTodoStorage((state) => state.todos);
   const todoDate = new Date(todo.due_date);
   const context = useToasts();
+
+  const today = new Date();
+  const afterfordays = new Date();
+  afterfordays.setDate(afterfordays.getDate() + 4);
+
+  let colorTodo = '';
+  if (todoDate.toISOString().slice(0, 10) < today.toISOString().slice(0, 10)) {
+    colorTodo = 'red';
+  } else if (
+    todoDate.toISOString().slice(0, 10) === today.toISOString().slice(0, 10)
+  ) {
+    colorTodo = 'orange';
+  } else if (todoDate > today && todoDate < afterfordays) {
+    colorTodo = 'yellow';
+  } else {
+    colorTodo = 'green';
+  }
+
   const handleDelete = async () => {
     try {
       await apiFetchDeleteTodo(todo.id);
@@ -82,6 +102,31 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
       setEditingDate(false);
     }
   };
+
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchTodoCategories() {
+      const todoData = todos.find((item: Todo) => item.id === todo.id);
+
+      if (todoData && todoData.categories[0]) {
+        setSelectedCategory(todoData.categories[0].id.toString());
+      } else {
+        setSelectedCategory('');
+      }
+    }
+
+    fetchTodoCategories();
+  }, [todo.id]);
+
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const categoryId = event.target.value;
+    setSelectedCategory(categoryId);
+    categoriesForTodo(categoryId, todo.id);
+  };
+
   return (
     <ul className="ulTodoPartie">
       <li className="liElementTodo">
@@ -101,6 +146,14 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
         <p>{todo.content}</p>
       </li>
       <li className="liElementDateChekDelet">
+        <select value={selectedCategory || ''} onChange={handleCategoryChange}>
+          <option value="">---chose category---</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.title}
+            </option>
+          ))}
+        </select>
         <input
           onChange={handleCangeStatus}
           type="checkbox"
@@ -116,7 +169,7 @@ function StructureTodoItem({ todo }: TodoPartieProps) {
             onKeyDown={(e) => e.key === 'Enter' && handleChangeDate()}
           />
         ) : (
-          <p onClick={() => setEditingDate(true)}>
+          <p style={{ color: colorTodo }} onClick={() => setEditingDate(true)}>
             {todoDate.toISOString().slice(0, 10)}
           </p>
         )}

@@ -9,8 +9,6 @@ function TodoPartie() {
   const todos = useTodoStorage((state) => state.todos);
   const sortingMethod = useTodoStorage((state) => state.sortingMethod);
 
-  console.log(todos);
-
   const sorting = (todos: Todo[]): Todo[] => {
     if (sortingMethod === 'minToMax') {
       return sortMinToMaxDate([...todos]);
@@ -32,7 +30,6 @@ function TodoPartie() {
     }
   };
 
-  console.log(todos);
   return (
     <div className="divUlTodoPart">
       {sorting(todos).map((t: Todo) => (
